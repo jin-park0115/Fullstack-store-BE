@@ -1,13 +1,12 @@
 package com.example.allstroebe;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:5173")//프론트엔드 주소
 @RestController
 @RequestMapping("/api/members") // 기본 주소는 /api/member 로 시작
 @RequiredArgsConstructor // 생성자 주입을 자동으로 해주는 Lombok 어노테이션
