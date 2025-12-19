@@ -13,7 +13,12 @@ public class Member {
     @GeneratedValue(strategy =  GenerationType.IDENTITY) //번호 자동 증가
     private Long id;
 
-    @Column(unique = true) // 아이디 중복 방지
+    @Column(unique = true, nullable = false) // 아이디 중복 방지
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false, length = 20)
+    private String nickname;
 }
