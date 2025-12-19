@@ -6,6 +6,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -20,13 +22,18 @@ public class JwtUtil {
 
     // 1.토큰 생성하기
     public String createToken(String email, String nickname) {
-        return Jwts.builder()
-                .setSubject(email) //토큰 주인
-                .claim("nickname", nickname) //내부에 저장할 데이터(닉네임)
-                .setIssuedAt(new Date()) //발행 시간
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) //만료 시간
-                .signWith(key, SignatureAlgorithm.HS256) //암호화 알고리즘 해시알고리즘
-                .compact();
+        try{
+            String encodedNickname = URLEncoder.encode(nickname, StandardCharsets.UTF_8.toString());
+            return Jwts.builder()
+                    .setSubject(email) //토큰 주인
+                    .claim("nickname", encodedNickname) //내부에 저장할 데이터(닉네임)
+                    .setIssuedAt(new Date()) //발행 시간
+                    .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) //만료 시간
+                    .signWith(key, SignatureAlgorithm.HS256) //암호화 알고리즘 해시알고리즘
+                    .compact();
+        } catch (Exception e) {
+            throw new RuntimeException("인코딩 실패",e);
+        }
     }
 
     // 2. 토큰에서 정보 꺼내기 (나중에 사용할 거)
