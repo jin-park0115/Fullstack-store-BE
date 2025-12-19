@@ -16,6 +16,8 @@ public class MemberController {
 //    private  static  Map<String, String> db = new HashMap<>();
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil; //Jwtutil 주입
+
 
     //1. 회원가입 API
     @PostMapping("/signup") // 중요한 정보는 POST로 보낸다.
@@ -47,7 +49,7 @@ public class MemberController {
               .map(m ->{
                   // 암호화된 비밀번호는 equalse()가 아니라 matches()로 비교해야함.
                   if (passwordEncoder.matches(memberDto.getPassword(), m.getPassword())) {
-                      return "로그인 성공! 환영합니다, " + m.getNickname() + "님";
+                      return jwtUtil.createToken(m.getEmail(), m.getNickname());
                   }
                   return "비밀번호가 틀렸습니다.";
               })
