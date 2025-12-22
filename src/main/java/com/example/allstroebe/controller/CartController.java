@@ -18,28 +18,29 @@ public class CartController {
     private final CartService cartService;
 
     @PostMapping
-    public String addCart(@RequestBody CartItemDto cartItemDto, Principal principal){
-        // Principal: 스프링 시큐리티가 토큰을 해석해서 넣어둔 '로그인한 사람 정보'
+    public ResponseEntity addCart(@RequestBody CartItemDto cartItemDto, Principal principal){
+        // 1. Principal이 null이면 명확하게 401 Unauthorized 에러 반환
         if(principal == null){
-            return "로그인이 필요합니다";
+            return new ResponseEntity<>("로그인이 필요합니다", HttpStatus.UNAUTHORIZED);
         }
 
-        String email = principal.getName(); //토큰에 저장된 이메일 꺼내기
+        String email = principal.getName();
 
         try {
-            cartService.addCart(cartItemDto, email);
-            return "장바구니 담기 성공!";
+            Long cartItemId = cartService.addCart(cartItemDto, email);
+            return new ResponseEntity<>("장바구니 담기 성공! ID: " + cartItemId, HttpStatus.OK);
         } catch (Exception e){
-            return "실패: " + e.getMessage();
+            // 2. 실패 시 400 Bad Request와 에러 메시지 반환
+            return new ResponseEntity<>("실패: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("list")
+    @GetMapping("/list") // 경로 앞에 /를 붙여주는 것이 정석입니다.
     public ResponseEntity getCartList(Principal principal){
         if (principal == null){
-            return new ResponseEntity("로그인이 필요합니다", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("로그인이 필요합니다", HttpStatus.UNAUTHORIZED);
         }
-        // 서비스에서 현재 로그인한 사용자의 장바구니 아이템을 가져오는 로직
+
         List<CartDetailDto> cartDetailList = cartService.getCartList(principal.getName());
         return new ResponseEntity<>(cartDetailList, HttpStatus.OK);
     }
