@@ -1,5 +1,6 @@
-package com.example.allstroebe;
+package com.example.allstroebe.repository;
 
+import com.example.allstroebe.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

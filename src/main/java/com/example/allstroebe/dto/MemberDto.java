@@ -1,4 +1,4 @@
-package com.example.allstroebe;
+package com.example.allstroebe.dto;
 
 import lombok.Getter;
 import lombok.Setter;

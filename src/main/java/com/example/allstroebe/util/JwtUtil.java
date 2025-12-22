@@ -1,4 +1,4 @@
-package com.example.allstroebe;
+package com.example.allstroebe.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

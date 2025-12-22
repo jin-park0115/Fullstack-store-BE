@@ -1,4 +1,4 @@
-package com.example.allstroebe;
+package com.example.allstroebe.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
